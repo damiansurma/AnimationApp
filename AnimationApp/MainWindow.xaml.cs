@@ -15,14 +15,41 @@ using System.Windows.Shapes;
 
 namespace AnimationApp
 {
-    /// <summary>
-    /// Interaction logic for MainWindow.xaml
-    /// </summary>
     public partial class MainWindow : Window
     {
+        
+
+        BaseOperation operation;
+
         public MainWindow()
         {
             InitializeComponent();
         }
+
+        private void lineButton_Click(object sender, RoutedEventArgs e)
+        {
+            // set up the proper option
+            operation = new DrawLine();
+        }
+
+
+
+
+        private void paintCanvas_PreviewMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            if (operation != null)
+            {
+                Console.WriteLine("drawing line");
+                operation.initDrawing(paintCanvas, e.GetPosition(paintCanvas));
+            }
+
+            Point startPoint = e.GetPosition(paintCanvas);
+            Console.WriteLine("current mouse potiion: {0} : {1}", startPoint.X, startPoint.Y);
+            if (e.LeftButton == MouseButtonState.Pressed)
+            {
+
+            }
+        }
+
     }
 }
