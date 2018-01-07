@@ -23,9 +23,9 @@ namespace AnimationApp
     /// </summary>
     interface BaseOperation
     {
-        int CurrentNoOfClicks { get; set; }
+        
 
-        void initDrawing(Canvas _canvas);
+        void draw(Canvas _canvas, params object[] list);
     }
 
     /// <summary>
@@ -33,81 +33,23 @@ namespace AnimationApp
     /// </summary>
     class DrawLine : BaseOperation
     {
-        CancellationTokenSource cts;
-
-        public int CurrentNoOfClicks { get; set; }
-        Point p1, p2;
-
-
-        public DrawLine()
+       
+        public async void draw(Canvas _canvas, params object[] list)
         {
-            CurrentNoOfClicks = 0;
-
-        }
-
-        public void initDrawing(Canvas _canvas)
-        {
-            switch (CurrentNoOfClicks)
-            {
-                case 0:
-                    p1 = Mouse.GetPosition(_canvas);
-                    CurrentNoOfClicks++;
-
-                    cts = new CancellationTokenSource();
-
-                    draw(_canvas);
-                    break;
-                case 1:
-                    CurrentNoOfClicks = 0;
-                    p2 = Mouse.GetPosition(_canvas);
-                    cts.Cancel();
-                    break;
-            }
-        }
-
-        private async void draw(Canvas _canvas)
-        {
-            bool firstRun = true;   // prevents removing canvas child on the first run of the loop (nothing to remove yet)
-
-            while (true)
-            {
-                if (cts.IsCancellationRequested) break;
-
-
-                // by byla linia stworzona przez peview do usuniecia
-                if (firstRun)
-                {
-                    firstRun = false;
-                }
-                else
-                {
-                    // usuniecie ostatniego potomka w canvas
-                    int i = _canvas.Children.Count - 1;
-                    _canvas.Children.RemoveAt(i);
-                }
-
-
                 Line line = new Line();
-
-                if (_canvas.IsMouseOver)
-                {
-                    p2 = Mouse.GetPosition(_canvas);
-                }
-
-
+   
                 line.Stroke = SystemColors.WindowFrameBrush;
-                line.X1 = p1.X; line.Y1 = p1.Y;
-                line.X2 = p2.X; line.Y2 = p2.Y;
+
+                line.X1 = ((Point)list[0]).X;
+                line.Y1 = ((Point)list[0]).Y;
+                line.X2 = ((Point)list[1]).X;
+                line.Y2 = ((Point)list[1]).Y;
 
                 _canvas.Children.Add(line);
 
-
-                await Task.Delay(50);
-            }
-
-
-        }
+        } // drawline method
+    } // class
 
 
-    }
-}
+
+} // namespace
