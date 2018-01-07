@@ -13,7 +13,9 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Threading;
+using System.Windows.Controls.Primitives;
 
+// pressing Line button removes last child, even if nothing was painted before ending in an error, fix
 
 namespace AnimationApp
 {
@@ -23,6 +25,8 @@ namespace AnimationApp
         BaseOperation operation;
 
         int currentNoOfClicks;
+        bool cancelDrawing;     // if we cancel drawing half-way thru, makes sure to erase the last child in canvas
+
         Point p1, p2;
         CancellationTokenSource cts;
 
@@ -33,12 +37,24 @@ namespace AnimationApp
             InitializeComponent();
 
             currentNoOfClicks = 0;
+            cancelDrawing = false;
+
         }
 
         private void lineButton_Click(object sender, RoutedEventArgs e)
         {
-            // set up the proper option
-            operation = new DrawLine();
+            
+            if (lineButton.IsChecked == true)
+            {
+                operation = new DrawLine();
+            } else
+            {
+                currentNoOfClicks = 0;               
+                operation = null;
+                cts.Cancel();
+                cancelDrawing = true;
+            }
+            
         }
 
         /// <summary>
@@ -52,11 +68,10 @@ namespace AnimationApp
             {
                 Console.WriteLine("drawing line");
                 initDrawing();
-            }
+            } 
 
+            Console.WriteLine("Current no of clicks: {0}", currentNoOfClicks);
 
-            Point startPoint = e.GetPosition(paintCanvas);
-            Console.WriteLine("current mouse potiion: {0} : {1}", startPoint.X, startPoint.Y);
             if (e.LeftButton == MouseButtonState.Pressed)
             {
 
@@ -80,11 +95,13 @@ namespace AnimationApp
 
                     cts = new CancellationTokenSource();
 
+                    cancelDrawing = false;
+
                     draw();
                     break;
                 case 1:
                     currentNoOfClicks = 0;
-                    p2 = Mouse.GetPosition(paintCanvas);
+                    //p2 = Mouse.GetPosition(paintCanvas);
                     cts.Cancel();
                     break;
             }
@@ -100,9 +117,16 @@ namespace AnimationApp
 
             while (true)
             {
-                if (cts.IsCancellationRequested) break;
-
-
+                if (cts.IsCancellationRequested)
+                {
+                    if (cancelDrawing == true)
+                    {
+                        //cancelDrawing = false;
+                        removeLastChild();
+                    }
+                        
+                    break;
+                }
                 // by byla linia stworzona przez peview do usuniecia
                 if (firstRun)
                 {
@@ -110,15 +134,15 @@ namespace AnimationApp
                 }
                 else
                 {
-                    // remove last child in canvas
-                    int i = paintCanvas.Children.Count - 1;
-                    paintCanvas.Children.RemoveAt(i);
+                    removeLastChild();
                 }
+
 
                 if (paintCanvas.IsMouseOver)
                 {
                     p2 = Mouse.GetPosition(paintCanvas);
                 }
+
 
                 operation.draw(paintCanvas, p1, p2);
 
@@ -126,9 +150,14 @@ namespace AnimationApp
             }
 
 
+        } // async draw
+
+        public void removeLastChild()
+        {
+            // remove last child in canvas
+            int i = paintCanvas.Children.Count - 1;
+            paintCanvas.Children.RemoveAt(i);
         }
-
-
 
     }
 }
