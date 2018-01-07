@@ -7,7 +7,9 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="372.368" Width="803.947">
     <Grid>
-        <Button x:Name="lineButton" Content="Line" HorizontalAlignment="Left" Margin="31,32,0,0" VerticalAlignment="Top" Width="75" Click="lineButton_Click"/>
+
+        <ToggleButton x:Name="lineButton" Content="Line" HorizontalAlignment="Left" Margin="31,32,0,0" VerticalAlignment="Top" Width="75" Click="lineButton_Click"/>
+        
         <Border BorderThickness="2" HorizontalAlignment="Left" Height="276" Margin="194,21,0,0" VerticalAlignment="Top" Width="524" BorderBrush="Black">
             <Canvas x:Name="paintCanvas" PreviewMouseDown ="paintCanvas_PreviewMouseDown" Cursor="" Background="#FFFFFDFD"/>
         </Border>

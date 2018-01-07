@@ -25,7 +25,7 @@ namespace AnimationApp
     {
         int CurrentNoOfClicks { get; set; }
 
-        void initDrawing(Canvas _canvas, Point _point);
+        void initDrawing(Canvas _canvas);
     }
 
     /// <summary>
@@ -45,12 +45,12 @@ namespace AnimationApp
 
         }
 
-        public void initDrawing(Canvas _canvas, Point _point)
+        public void initDrawing(Canvas _canvas)
         {
             switch (CurrentNoOfClicks)
             {
                 case 0:
-                    p1 = _point;
+                    p1 = Mouse.GetPosition(_canvas);
                     CurrentNoOfClicks++;
 
                     cts = new CancellationTokenSource();
@@ -59,7 +59,7 @@ namespace AnimationApp
                     break;
                 case 1:
                     CurrentNoOfClicks = 0;
-                    p2 = _point;
+                    p2 = Mouse.GetPosition(_canvas);
                     cts.Cancel();
                     break;
             }
@@ -67,7 +67,7 @@ namespace AnimationApp
 
         private async void draw(Canvas _canvas)
         {
-            bool firstRun = true;
+            bool firstRun = true;   // prevents removing canvas child on the first run of the loop (nothing to remove yet)
 
             while (true)
             {

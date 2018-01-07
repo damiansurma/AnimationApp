@@ -44,7 +44,7 @@ namespace AnimationApp
             if (operation != null)
             {
                 Console.WriteLine("drawing line");
-                operation.initDrawing(paintCanvas, e.GetPosition(paintCanvas));
+                operation.initDrawing(paintCanvas);
             }
 
             Point startPoint = e.GetPosition(paintCanvas);
