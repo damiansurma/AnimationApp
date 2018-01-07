@@ -12,27 +12,50 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Threading;
+using System.Windows.Controls.Primitives;
+
+// pressing Line button removes last child, even if nothing was painted before ending in an error, fix
 
 namespace AnimationApp
 {
     public partial class MainWindow : Window
     {
         
-
         BaseOperation operation;
+
+        int currentNoOfClicks;
+        bool cancelDrawing;     // if we cancel drawing half-way thru, makes sure to erase the last child in canvas
+
+        Point p1, p2;
+        CancellationTokenSource cts;
+
+
 
         public MainWindow()
         {
             InitializeComponent();
+
+            currentNoOfClicks = 0;
+            cancelDrawing = false;
+
         }
 
         private void lineButton_Click(object sender, RoutedEventArgs e)
         {
-            // set up the proper option
-            operation = new DrawLine();
+            
+            if (lineButton.IsChecked == true)
+            {
+                operation = new DrawLine();
+            } else
+            {
+                currentNoOfClicks = 0;               
+                operation = null;
+                cts.Cancel();
+                cancelDrawing = true;
+            }
+            
         }
-
-
 
         /// <summary>
         /// Handles mouse clicks on drawing area canvas.
@@ -44,15 +67,96 @@ namespace AnimationApp
             if (operation != null)
             {
                 Console.WriteLine("drawing line");
-                operation.initDrawing(paintCanvas, e.GetPosition(paintCanvas));
-            }
+                initDrawing();
+            } 
 
-            Point startPoint = e.GetPosition(paintCanvas);
-            Console.WriteLine("current mouse potiion: {0} : {1}", startPoint.X, startPoint.Y);
+            Console.WriteLine("Current no of clicks: {0}", currentNoOfClicks);
+
             if (e.LeftButton == MouseButtonState.Pressed)
             {
 
             }
+        }
+
+
+        /// <summary>
+        /// Keeps track of number of mouse clicks on the painting area.
+        /// </summary>
+        public void initDrawing()
+        {
+
+            Console.WriteLine("mouse click {0}", currentNoOfClicks);
+
+            switch (currentNoOfClicks)
+            {
+                case 0:
+                    p1 = Mouse.GetPosition(paintCanvas);
+                    currentNoOfClicks++;
+
+                    cts = new CancellationTokenSource();
+
+                    cancelDrawing = false;
+
+                    draw();
+                    break;
+                case 1:
+                    currentNoOfClicks = 0;
+                    //p2 = Mouse.GetPosition(paintCanvas);
+                    cts.Cancel();
+                    break;
+            }
+        }
+
+
+        /// <summary>
+        /// Performs drawing on the canvas depending what the operation variable is pointing at.
+        /// </summary>
+        private async void draw()
+        {
+            bool firstRun = true;   // prevents removing canvas child on the first run of the loop (nothing to remove yet)
+
+            while (true)
+            {
+                if (cts.IsCancellationRequested)
+                {
+                    if (cancelDrawing == true)
+                    {
+                        //cancelDrawing = false;
+                        removeLastChild();
+                    }
+                        
+                    break;
+                }
+                // by byla linia stworzona przez peview do usuniecia
+                if (firstRun)
+                {
+                    firstRun = false;
+                }
+                else
+                {
+                    removeLastChild();
+                }
+
+
+                if (paintCanvas.IsMouseOver)
+                {
+                    p2 = Mouse.GetPosition(paintCanvas);
+                }
+
+
+                operation.draw(paintCanvas, p1, p2);
+
+                await Task.Delay(50);
+            }
+
+
+        } // async draw
+
+        public void removeLastChild()
+        {
+            // remove last child in canvas
+            int i = paintCanvas.Children.Count - 1;
+            paintCanvas.Children.RemoveAt(i);
         }
 
     }
