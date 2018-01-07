@@ -17,6 +17,10 @@ using System.Threading;
 
 namespace AnimationApp
 {
+
+    /// <summary>
+    /// Drawing operation interface.
+    /// </summary>
     interface BaseOperation
     {
         int CurrentNoOfClicks { get; set; }
@@ -24,7 +28,9 @@ namespace AnimationApp
         void initDrawing(Canvas _canvas, Point _point);
     }
 
-
+    /// <summary>
+    /// Responsibe for drawing a simple straight line.
+    /// </summary>
     class DrawLine : BaseOperation
     {
         CancellationTokenSource cts;

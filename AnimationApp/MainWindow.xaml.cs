@@ -34,7 +34,11 @@ namespace AnimationApp
 
 
 
-
+        /// <summary>
+        /// Handles mouse clicks on drawing area canvas.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void paintCanvas_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
             if (operation != null)
