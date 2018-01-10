@@ -24,7 +24,6 @@ namespace AnimationApp
     interface BaseOperation
     {
         
-
         void draw(Canvas _canvas, params object[] list);
     }
 
@@ -50,6 +49,38 @@ namespace AnimationApp
         } // drawline method
     } // class
 
+    class DrawRectangle : BaseOperation
+    {
 
+        public async void draw(Canvas _canvas, params object[] list)
+        {
+            Rectangle rect = new Rectangle();
+            double x1, x2, y1, y2;
+            Point start = new Point();
+
+            // tmp values to make later calculations more clear
+            x1 = ((Point)list[0]).X;     x2 = ((Point)list[1]).X;
+            y1 = ((Point)list[0]).Y;     y2 = ((Point)list[1]).Y;
+
+            // width and height must be positives otherwise crash
+            double width = Math.Abs(x2 - x1);
+            double height = Math.Abs(y2 - y1);
+
+            // starting point from which to draw the rectangle
+            start.X = (x2 > x1) ? x1 : x2;
+            start.Y = (y2 > y1) ? y1 : y2;
+
+            rect.Stroke = SystemColors.WindowFrameBrush;
+
+            Canvas.SetLeft(rect, start.X);
+            Canvas.SetTop(rect, start.Y);
+
+            rect.Width = width;
+            rect.Height = height;
+            
+            _canvas.Children.Add(rect);
+
+        } // drawline method
+    } // class
 
 } // namespace

@@ -15,7 +15,6 @@ using System.Windows.Shapes;
 using System.Threading;
 using System.Windows.Controls.Primitives;
 
-// pressing Line button removes last child, even if nothing was painted before ending in an error, fix
 
 namespace AnimationApp
 {
@@ -42,8 +41,7 @@ namespace AnimationApp
         }
 
         private void lineButton_Click(object sender, RoutedEventArgs e)
-        {
-            
+        {   
             if (lineButton.IsChecked == true)
             {
                 operation = new DrawLine();
@@ -53,9 +51,24 @@ namespace AnimationApp
                 operation = null;
                 cts.Cancel();
                 cancelDrawing = true;
-            }
-            
+            }    
         }
+
+        private void rectButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (rectButton.IsChecked == true)
+            {
+                operation = new DrawRectangle();
+            }
+            else
+            {
+                currentNoOfClicks = 0;
+                operation = null;
+                cts.Cancel();
+                cancelDrawing = true;
+            }
+        }
+
 
         /// <summary>
         /// Handles mouse clicks on drawing area canvas.
@@ -95,7 +108,7 @@ namespace AnimationApp
 
                     cts = new CancellationTokenSource();
 
-                    cancelDrawing = false;
+                    
 
                     draw();
                     break;
@@ -123,6 +136,7 @@ namespace AnimationApp
                     {
                         //cancelDrawing = false;
                         removeLastChild();
+                        cancelDrawing = false;
                     }
                         
                     break;
@@ -137,7 +151,7 @@ namespace AnimationApp
                     removeLastChild();
                 }
 
-
+                // makes sure the line wont get outside the canvas
                 if (paintCanvas.IsMouseOver)
                 {
                     p2 = Mouse.GetPosition(paintCanvas);

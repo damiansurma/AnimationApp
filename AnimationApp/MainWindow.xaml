@@ -9,7 +9,8 @@
     <Grid>
 
         <ToggleButton x:Name="lineButton" Content="Line" HorizontalAlignment="Left" Margin="31,32,0,0" VerticalAlignment="Top" Width="75" Click="lineButton_Click"/>
-        
+        <ToggleButton x:Name="rectButton" Content="Rectangle" HorizontalAlignment="Left" Margin="31,73,0,0" VerticalAlignment="Top" Width="75" Click="rectButton_Click"/>
+
         <Border BorderThickness="2" HorizontalAlignment="Left" Height="276" Margin="194,21,0,0" VerticalAlignment="Top" Width="524" BorderBrush="Black">
             <Canvas x:Name="paintCanvas" PreviewMouseDown ="paintCanvas_PreviewMouseDown" Cursor="" Background="#FFFFFDFD"/>
         </Border>
