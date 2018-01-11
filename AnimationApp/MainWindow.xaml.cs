@@ -69,6 +69,21 @@ namespace AnimationApp
             }
         }
 
+        private void ellipseButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (ellipseButton.IsChecked == true)
+            {
+                operation = new DrawEllipse();
+            }
+            else
+            {
+                currentNoOfClicks = 0;
+                operation = null;
+                cts.Cancel();
+                cancelDrawing = true;
+            }
+        }
+
 
         /// <summary>
         /// Handles mouse clicks on drawing area canvas.
