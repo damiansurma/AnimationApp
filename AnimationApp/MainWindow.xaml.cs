@@ -22,9 +22,8 @@ namespace AnimationApp
     {       
         BaseOperation operation;
 
-        int currentNoOfClicks;
-        bool cancelDrawing;     // if we cancel drawing half-way thru, makes sure to erase the last child in canvas
-
+        int currentNoOfClicks; // keeps track of number of clicks on canvas
+      
         Point p1, p2;
         CancellationTokenSource cts;
 
@@ -35,64 +34,30 @@ namespace AnimationApp
             InitializeComponent();
 
             currentNoOfClicks = 0;
-            cancelDrawing = false;
-
-
+         
         }
 
         private void lineButton_Click(object sender, RoutedEventArgs e)
-        {   
+        {
             if (lineButton.IsChecked == true)
             {
-                if (operation != null)
-                {
-                    resetDrawing();
-                }
-                    
-
-                operation = new DrawLine();
-                cancelDrawing = false;
-            } else
-            {
                 resetDrawing();
-            }    
+                operation = new DrawLine();
+            }
+         
+
         }
 
         private void rectButton_Click(object sender, RoutedEventArgs e)
         {
-            if (rectButton.IsChecked == true)
-            {
-                if (operation != null)
-                {
-                    resetDrawing();
-                }
-
-
-                operation = new DrawRectangle();
-                cancelDrawing = false;
-            }
-            else
-            {
-                resetDrawing();
-            }
+            resetDrawing();
+            operation = new DrawRectangle();
         }
 
         private void ellipseButton_Click(object sender, RoutedEventArgs e)
         {
-            if (ellipseButton.IsChecked == true)
-            {
-                if (operation != null)
-                {
-                    resetDrawing();
-                }
-
-                operation = new DrawEllipse();
-                cancelDrawing = false;
-            }
-            else
-            {
-                resetDrawing();
-            }
+            resetDrawing();
+            operation = new DrawEllipse();
         }
 
 
@@ -111,8 +76,7 @@ namespace AnimationApp
         {
             if (operation != null)
             {
-                Console.WriteLine("drawing line");
-                initDrawing();
+                 initDrawing();
             } 
 
             Console.WriteLine("Current no of clicks: {0}", currentNoOfClicks);
@@ -163,16 +127,17 @@ namespace AnimationApp
                 if (cts.IsCancellationRequested)
                 {
 
-                    if (cancelDrawing == true)
+                    // if currentNoOfClicks is 0 then drawing is complete or not yet started, so nothing to remove
+                    // else we remove the preview drawing
+                    if (currentNoOfClicks != 0)
                     {
-                        //cancelDrawing = false;
                         removeLastChild();
-                        cancelDrawing = false;
+                        currentNoOfClicks = 0;
                     }
                         
                     break;
                 }
-                // by byla linia stworzona przez peview do usuniecia
+                // to make sure theres a object draw first for preview and to be updated later (removed and redrawn)
                 if (firstRun)
                 {
                     firstRun = false;
@@ -213,10 +178,13 @@ namespace AnimationApp
         // incase we switch drawing shapes mid-way thru drawing a shape
         public void resetDrawing()
         {
-            currentNoOfClicks = 0;
-            operation = null;
-            cancelDrawing = true;
-            cts.Cancel();
+
+            if(operation != null)
+            {
+                cts.Cancel();
+                operation = null;
+            }
+               
            
         }
     }
