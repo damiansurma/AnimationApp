@@ -12,11 +12,12 @@
     <StackPanel Orientation="Vertical">
         <StackPanel Orientation="Horizontal" >
 
-            <StackPanel  Orientation="Vertical" Margin="20,20,20,60" Width="100"  >
-                <ToggleButton x:Name="lineButton" Content="Line"  Click="lineButton_Click" Margin="10, 20" Height="30"/>
-                <ToggleButton x:Name="rectButton" Content="Rectangle"  Click="rectButton_Click" Margin="10, 20" Height="30"/>
-                <ToggleButton x:Name="ellipseButton" Content="Ellipse" Click="ellipseButton_Click" Margin="10, 20" Height="30"/>
-                <Button x:Name="remove" Content="Remove" Click="removeLastDrawing_Button" Margin="10, 20" Height="30" />
+            <StackPanel  Orientation="Vertical" Margin="20,20,20,60" Width="100" >
+                
+                <RadioButton x:Name="lineButton" Content="Line"  Click="lineButton_Click" Margin="10, 20" Height="30" Style="{StaticResource {x:Type ToggleButton}}" />
+                <RadioButton x:Name="rectButton" Content="Rectangle"  Click="rectButton_Click" Margin="10, 20" Height="30" Style="{StaticResource {x:Type ToggleButton}}" />
+                <RadioButton x:Name="ellipseButton" Content="Ellipse" Click="ellipseButton_Click" Margin="10, 20" Height="30" Style="{StaticResource {x:Type ToggleButton}}" />
+                
             </StackPanel>
 
             <Border BorderThickness="5" Margin="0,30" Height="450" BorderBrush="Black" Width="700" Panel.ZIndex="-3" MinWidth="700" MinHeight="450" >
