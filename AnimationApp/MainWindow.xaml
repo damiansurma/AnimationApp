@@ -5,16 +5,46 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:AnimationApp"
         mc:Ignorable="d"
-        Title="MainWindow" Height="372.368" Width="803.947">
-    <Grid>
-
-        <ToggleButton x:Name="lineButton" Content="Line" HorizontalAlignment="Left" Margin="31,32,0,0" VerticalAlignment="Top" Width="75" Click="lineButton_Click"/>
-        <ToggleButton x:Name="rectButton" Content="Rectangle" HorizontalAlignment="Left" Margin="31,73,0,0" VerticalAlignment="Top" Width="75" Click="rectButton_Click"/>
-        <ToggleButton x:Name="ellipseButton" Content="Ellipse" HorizontalAlignment="Left" Margin="31,115,0,0" VerticalAlignment="Top" Width="75" Click="ellipseButton_Click"/>
+        Title="MainWindow" Height="630" Width="900" MinWidth="950" MinHeight="600">
 
 
-        <Border BorderThickness="2" HorizontalAlignment="Left" Height="276" Margin="194,21,0,0" VerticalAlignment="Top" Width="524" BorderBrush="Black">
-            <Canvas x:Name="paintCanvas" PreviewMouseDown ="paintCanvas_PreviewMouseDown" Cursor="" Background="#FFFFFDFD"/>
-        </Border>
-    </Grid>
+
+    <StackPanel Orientation="Vertical">
+        <StackPanel Orientation="Horizontal" >
+
+            <StackPanel  Orientation="Vertical" Margin="20,20,20,60" Width="100"  >
+                <ToggleButton x:Name="lineButton" Content="Line"  Click="lineButton_Click" Margin="10, 20" Height="30"/>
+                <ToggleButton x:Name="rectButton" Content="Rectangle"  Click="rectButton_Click" Margin="10, 20" Height="30"/>
+                <ToggleButton x:Name="ellipseButton" Content="Ellipse" Click="ellipseButton_Click" Margin="10, 20" Height="30"/>
+                <Button x:Name="remove" Content="Remove" Click="removeLastDrawing_Button" Margin="10, 20" Height="30" />
+            </StackPanel>
+
+            <Border BorderThickness="5" Margin="0,30" Height="450" BorderBrush="Black" Width="700" Panel.ZIndex="-3" MinWidth="700" MinHeight="450" >
+                <Canvas x:Name="paintCanvas"  PreviewMouseDown ="paintCanvas_PreviewMouseDown" Background="#FFFFFDFD"/>
+            </Border>
+
+        </StackPanel>
+
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+
+            <Button x:Name="loopButton" Content="Loop" Margin="10, 20" Height="30"/>
+
+            <Button x:Name="startButton" Content="Start" Margin="10, 20" Height="30"/>
+            <Button x:Name="stopButton" Content="Stop" Margin="10, 20" Height="30"/>
+            
+            <Button x:Name="previousFrameButton" Content="&lt;&lt;" Margin="10, 20" Height="30"/>
+            <Label x:Name="currentFrameLabel" Content="1/1" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+            <Button x:Name="nextFrameButton" Content=">>" Margin="10, 20" Height="30"/>
+
+            <Button x:Name="clearCanvasButton" Content="Clear" Margin="10, 20" Height="30"/>
+            <Button x:Name="removeLastChildButton" Content="Remove Last" Margin="10, 20" Height="30"/>
+
+            <Button x:Name="addFrameButton" Content="Add Frame" Margin="10, 20" Height="30"/>
+            <Button x:Name="removeFrameButton" Content="Remove Frame" Margin="10, 20" Height="30"/>
+            
+        </StackPanel>
+
+
+    </StackPanel>
+
 </Window>

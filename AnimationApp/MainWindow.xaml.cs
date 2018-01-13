@@ -45,6 +45,7 @@ namespace AnimationApp
             if (lineButton.IsChecked == true)
             {
                 operation = new DrawLine();
+                cancelDrawing = false;
             } else
             {
                 currentNoOfClicks = 0;               
@@ -59,6 +60,7 @@ namespace AnimationApp
             if (rectButton.IsChecked == true)
             {
                 operation = new DrawRectangle();
+                cancelDrawing = false;
             }
             else
             {
@@ -74,6 +76,7 @@ namespace AnimationApp
             if (ellipseButton.IsChecked == true)
             {
                 operation = new DrawEllipse();
+                cancelDrawing = false;
             }
             else
             {
@@ -82,6 +85,12 @@ namespace AnimationApp
                 cts.Cancel();
                 cancelDrawing = true;
             }
+        }
+
+
+        private void removeLastDrawing_Button(object sender, RoutedEventArgs e)
+        {
+            removeLastChild();
         }
 
 
@@ -122,8 +131,6 @@ namespace AnimationApp
                     currentNoOfClicks++;
 
                     cts = new CancellationTokenSource();
-
-                    
 
                     draw();
                     break;
@@ -180,6 +187,8 @@ namespace AnimationApp
 
 
         } // async draw
+
+
 
         public void removeLastChild()
         {

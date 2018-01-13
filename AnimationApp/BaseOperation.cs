@@ -78,6 +78,7 @@ namespace AnimationApp
             rect.Width = width;
             rect.Height = height;
             
+
             _canvas.Children.Add(rect);
 
         } // draw rect method
