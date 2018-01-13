@@ -72,6 +72,7 @@ namespace AnimationApp
 
             rect.Stroke = SystemColors.WindowFrameBrush;
 
+
             Canvas.SetLeft(rect, start.X);
             Canvas.SetTop(rect, start.Y);
 

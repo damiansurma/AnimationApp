@@ -19,8 +19,7 @@ using System.Windows.Controls.Primitives;
 namespace AnimationApp
 {
     public partial class MainWindow : Window
-    {
-        
+    {       
         BaseOperation operation;
 
         int currentNoOfClicks;
@@ -38,20 +37,24 @@ namespace AnimationApp
             currentNoOfClicks = 0;
             cancelDrawing = false;
 
+
         }
 
         private void lineButton_Click(object sender, RoutedEventArgs e)
         {   
             if (lineButton.IsChecked == true)
             {
+                if (operation != null)
+                {
+                    resetDrawing();
+                }
+                    
+
                 operation = new DrawLine();
                 cancelDrawing = false;
             } else
             {
-                currentNoOfClicks = 0;               
-                operation = null;
-                cts.Cancel();
-                cancelDrawing = true;
+                resetDrawing();
             }    
         }
 
@@ -59,15 +62,18 @@ namespace AnimationApp
         {
             if (rectButton.IsChecked == true)
             {
+                if (operation != null)
+                {
+                    resetDrawing();
+                }
+
+
                 operation = new DrawRectangle();
                 cancelDrawing = false;
             }
             else
             {
-                currentNoOfClicks = 0;
-                operation = null;
-                cts.Cancel();
-                cancelDrawing = true;
+                resetDrawing();
             }
         }
 
@@ -75,15 +81,17 @@ namespace AnimationApp
         {
             if (ellipseButton.IsChecked == true)
             {
+                if (operation != null)
+                {
+                    resetDrawing();
+                }
+
                 operation = new DrawEllipse();
                 cancelDrawing = false;
             }
             else
             {
-                currentNoOfClicks = 0;
-                operation = null;
-                cts.Cancel();
-                cancelDrawing = true;
+                resetDrawing();
             }
         }
 
@@ -117,7 +125,7 @@ namespace AnimationApp
 
 
         /// <summary>
-        /// Keeps track of number of mouse clicks on the painting area.
+        /// Keeps track of number of mouse clicks on the painting area. Runs after clicking on the cavans area.
         /// </summary>
         public void initDrawing()
         {
@@ -154,6 +162,7 @@ namespace AnimationApp
             {
                 if (cts.IsCancellationRequested)
                 {
+
                     if (cancelDrawing == true)
                     {
                         //cancelDrawing = false;
@@ -188,14 +197,27 @@ namespace AnimationApp
 
         } // async draw
 
-
-
+        // remove last child in canvas
         public void removeLastChild()
-        {
-            // remove last child in canvas
+        {  
             int i = paintCanvas.Children.Count - 1;
             paintCanvas.Children.RemoveAt(i);
         }
 
+        public void clearCanvas()
+        {
+            paintCanvas.Children.Clear();
+        }
+
+
+        // incase we switch drawing shapes mid-way thru drawing a shape
+        public void resetDrawing()
+        {
+            currentNoOfClicks = 0;
+            operation = null;
+            cancelDrawing = true;
+            cts.Cancel();
+           
+        }
     }
 }

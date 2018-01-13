@@ -41,7 +41,10 @@
 
             <Button x:Name="addFrameButton" Content="Add Frame" Margin="10, 20" Height="30"/>
             <Button x:Name="removeFrameButton" Content="Remove Frame" Margin="10, 20" Height="30"/>
-            
+
+            <RadioButton x:Name="helloButton" Content="Add Frame" Style="{StaticResource {x:Type ToggleButton}}" Margin="10, 20" Height="30"/>
+            <RadioButton x:Name="helloButton2" Content="Add Frame" Style="{StaticResource {x:Type ToggleButton}}" Margin="10, 20" Height="30"/>
+
         </StackPanel>
 
 
